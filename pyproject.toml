@@ -7,7 +7,7 @@ authors = ["Michal Przytulski <michal@przytulski.pl>", "Daniel Ancuta <whisller@
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "^3.6"
+python = "^3.6.2"
 pygithub = "^1.46"
 gitpython = "^3.1.0"
 
