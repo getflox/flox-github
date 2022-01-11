@@ -1,3 +1,5 @@
+import os
+
 from floxcore.config import Configuration, ParamDefinition
 
 
@@ -20,7 +22,7 @@ class GitHubConfiguration(Configuration):
 
     def secrets(self):
         return (
-            ParamDefinition("token", "GitHub Access Token", secret=True),
+            ParamDefinition("token", "GitHub Access Token", secret=True, default=os.getenv("GITHUB_TOKEN")),
         )
 
     def schema(self):
