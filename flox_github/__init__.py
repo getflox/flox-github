@@ -1,6 +1,6 @@
 from flox_github.configure import GitHubConfiguration
 from flox_github.docker import docker_credentials_provider
-from flox_github.project import create_repository, configure_repository
+from flox_github.project import create_repository, configure_repository, dump_variables
 from flox_github.workflow import create_pr, update_pr
 from floxcore.command import Stage
 from floxcore.context import Flox
@@ -11,9 +11,15 @@ class GitHubPlugin(Plugin):
     def configuration(self):
         return GitHubConfiguration()
 
+    def handle_variables(self, flox: Flox):
+        return (
+            Stage(dump_variables, priority=2000),
+        )
+
     def handle_project(self, flox: Flox):
         return (
             Stage(create_repository, priority=2000),
+            Stage(dump_variables, priority=2000),
             Stage(configure_repository, priority=200),
         )
 

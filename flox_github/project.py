@@ -6,6 +6,21 @@ from floxcore.utils.string import as_flag
 
 @handle_exceptions
 @with_github
+def dump_variables(flox: Flox, github_api: UnifiedApi, out, **kwargs):
+    repo = github_api.get_repository(flox.id)
+
+    return dict(
+        github_clone_url=repo.clone_url,
+        github_url=repo.html_url,
+        github_ssh_url=repo.ssh_url,
+        github_repository=repo,
+        github_empty=repo.get_commits().totalCount == 0,
+        git_repository=authenticate_url(repo.clone_url, github_api)
+    )
+
+
+@handle_exceptions
+@with_github
 def create_repository(flox: Flox, github_api: UnifiedApi, out, **kwargs):
     """Create GitHub repository"""
     repo = github_api.get_repository(flox.id)
@@ -22,15 +37,6 @@ def create_repository(flox: Flox, github_api: UnifiedApi, out, **kwargs):
 
         repo = github_api.create_repository(flox.id, **configuration)
         out.success(f"Created GitHub repository '{repo.html_url}'")
-
-    return dict(
-        github_clone_url=repo.clone_url,
-        github_url=repo.html_url,
-        github_ssh_url=repo.ssh_url,
-        github_repository=repo,
-        github_empty=repo.get_commits().totalCount == 0,
-        git_repository=authenticate_url(repo.clone_url, github_api)
-    )
 
 
 @handle_exceptions
