@@ -12,6 +12,7 @@ pygithub = "^1.46"
 gitpython = "^3.1.0"
 
 [tool.poetry.dev-dependencies]
+bump2version = "^1.0.1"
 
 [tool.poetry.plugins."flox.plugin"]
 github = "flox_github:plugin"
