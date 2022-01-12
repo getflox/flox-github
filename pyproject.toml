@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "flox-github"
-version = "0.1.0"
+version = "0.1.1"
 homepage = "https://github.com/getflox/flox-github"
 description = "Create and enforce standard rules on GitHub repositories managed by flox."
 authors = ["Michal Przytulski <michal@przytulski.pl>", "Daniel Ancuta <whisller@gmail.com>"]
