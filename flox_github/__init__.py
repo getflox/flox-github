@@ -13,7 +13,7 @@ class GitHubPlugin(Plugin):
 
     def handle_project(self, flox: Flox):
         return (
-            Stage(create_repository, priority=200),
+            Stage(create_repository, priority=2000),
             Stage(configure_repository, priority=200),
         )
 
