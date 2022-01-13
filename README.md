@@ -2,6 +2,15 @@
 
 [flox](https://github.com/getflox/flox) automation for GitHub repository managmenet
 
+## Exposed variables
+
+- github_clone_url - http checkout URL 
+- github_url - public URL of the repository 
+- github_ssh_url - checkout URL used for git+ssh protocol
+- github_repository - repository object as fetched from GitHub API 
+- `github_empty` -  True/False flag
+- `git_repository` - authenticated URL which can be used for all write operations
+
 ## Installation 
 
 ```bash
