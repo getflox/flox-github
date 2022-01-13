@@ -5,20 +5,20 @@
 ## Installation 
 
 ```bash
-flox plugin install flox-github
+$ flox plugin install flox-github
 ```
 
 or 
 
 ```bash
-pip install flox-github
+$ pip install flox-github
 ```
 
 
 ## Configuration 
 
 ```bash
-flox config --plugin github --scope=user
+$ flox config --plugin github --scope=user
 
 ℹ Starting configuration of github for 'user' scope
  → GitHub default organization [getflox]:
