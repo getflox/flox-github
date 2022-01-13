@@ -5,6 +5,7 @@ homepage = "https://github.com/getflox/flox-github"
 description = "Create and enforce standard rules on GitHub repositories managed by flox."
 authors = ["Michal Przytulski <michal@przytulski.pl>", "Daniel Ancuta <whisller@gmail.com>"]
 license = "MIT"
+readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.6.2"
