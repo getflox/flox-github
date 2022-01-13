@@ -1,7 +1,8 @@
-from flox_github.helper import handle_exceptions, authenticate_url
-from flox_github.remote import with_github, UnifiedApi
 from floxcore.context import Flox
 from floxcore.utils.string import as_flag
+
+from flox_github.helper import handle_exceptions, authenticate_url
+from flox_github.remote import with_github, UnifiedApi
 
 
 @handle_exceptions
@@ -15,7 +16,9 @@ def dump_variables(flox: Flox, github_api: UnifiedApi, out, **kwargs):
         github_ssh_url=repo.ssh_url,
         github_repository=repo,
         github_empty=repo.get_commits().totalCount == 0,
-        git_repository=authenticate_url(repo.clone_url, github_api)
+        git_repository=authenticate_url(repo.clone_url, github_api),
+        git_remote_has_branches=repo.get_branches().totalCount > 0,
+        git_default_branch=repo.default_branch
     )
 
 

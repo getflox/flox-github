@@ -23,6 +23,15 @@ class GitHubPlugin(Plugin):
             Stage(configure_repository, priority=200),
         )
 
+    def handle_command_options_flox_project(self):
+        options = (
+            ("--github-org", dict(help="Overwrite GitHub organisation")),
+            ("--github-user-owned",
+             dict(help="Create project in user space rather than org", is_flag=True, default=False)),
+        )
+
+        return options
+
     def handle_workflow_publish(self, flox: Flox):
         return (
             Stage(create_pr),

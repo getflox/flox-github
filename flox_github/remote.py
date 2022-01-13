@@ -23,20 +23,21 @@ class UnifiedApi:
     Unified API class - hiding differences between organisation and user
     """
 
-    def __init__(self, flox, github):
+    def __init__(self, flox, github, github_org=None, github_user_owned=None, **kwargs):
         if not flox:
             raise GitHubException("Unable to create UnifiedApi instance, flox instance is required")
 
-        if not flox.settings.github.organization:
+        self.org = github_org or flox.settings.github.organization
+        if not self.org and not github_user_owned:
             raise GitHubException("You need to specify GitHub organisation before using flox-github.")
 
         self.flox = flox
         self.github = github
 
-        try:
-            self.context = github.get_organization(flox.settings.github.organization)
-        except UnknownObjectException:
+        if github_user_owned:
             self.context = github.get_user()
+        else:
+            self.context = github.get_organization(self.org)
 
     def create_repository(self, name, **kwargs):
         return self.context.create_repo(name, **kwargs)
@@ -82,7 +83,7 @@ def with_github(f):
 
         if 'github_api' in sig.parameters:
             if not hasattr(with_github, "api"):
-                with_github.api = UnifiedApi(flox, with_github.client)
+                with_github.api = UnifiedApi(github=with_github.client, **kwargs)
 
             kwargs['github_api'] = with_github.api
 
