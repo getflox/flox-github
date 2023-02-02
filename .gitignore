@@ -140,3 +140,4 @@ dmypy.json
 .DS_Store
 .python-version
 /flox-github.iml
+/poetry.lock

@@ -8,13 +8,11 @@ license = "MIT"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.6.2"
-pygithub = "^1.46"
+python = "^3.8"
+pygithub = "^1.57"
 gitpython = "^3.1.0"
-flox-core = ">=0.2,<1.0.0"
 
 [tool.poetry.dev-dependencies]
-bump2version = "^1.0.1"
 
 [tool.poetry.plugins."flox.plugin"]
 github = "flox_github:plugin"

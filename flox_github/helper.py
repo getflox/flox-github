@@ -11,14 +11,18 @@ def handle_exceptions(f):
         try:
             return f(*args, **kwargs)
         except GithubException as e:
-            message = e.data.get("message")
-            documentation = e.data.get("documentation_url")
-            raise PluginException(f'[Github API] [{e.status}] "{message}" check "{documentation}".')
+            if e.data:
+                message = e.data.get("message")
+                documentation = e.data.get("documentation_url", e.data.get("errors"))
+                raise PluginException(f'[Github API] [{e.status}] "{message}" check "{documentation}".')
+            else:
+                raise PluginException(f"[Github API] [HTTP Status: {e.status}]")
 
     return wrapper
 
 
 def authenticate_url(url: str, github_api):
-    if 'github.com' not in url or not url.startswith("https://"):
+    if "github.com" not in url or not url.startswith("https://"):
         return url
+
     return url.replace("https://", f"https://{github_api.flox.secrets.getone('github_token')}@")
