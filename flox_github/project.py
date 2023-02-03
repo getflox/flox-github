@@ -1,10 +1,7 @@
-# from floxcore.context import Flox
-# from floxcore.utils.string import as_flag
-from github import Repository
+from github import Repository, Consts
 from flox_github.helper import handle_exceptions, authenticate_url
 from flox_github.remote import with_github, UnifiedApi
 from floxcore import FloxContext
-
 
 @handle_exceptions
 @with_github
@@ -47,6 +44,10 @@ def create_repository(flox: FloxContext, github_api: UnifiedApi, output, organiz
         repo = github_api.create_repository(**repository)
         output.success(f"Created GitHub repository '{repo.html_url}'")
 
+    if repo.default_branch != flox.profile.git.default_branch:
+        repo.rename_branch(repo.default_branch, flox.profile.git.default_branch)
+        output.success(f"Using '{flox.profile.git.default_branch}' as default branch")
+
     return dict(
         git_repository=repo.clone_url,
         git_remote_has_branches=repo.get_branches().totalCount > 0,
@@ -65,25 +66,24 @@ def configure_branches(flox: FloxContext, github_api: UnifiedApi, repository, wo
         default_branch = github_api.get_branch(flox.project.id, repo.default_branch)
 
     main_branch = github_api.get_branch(flox.project.id, flox.profile.git.default_branch)
-    if not main_branch:
-        pass
 
-    for branch in flox.profile.git.branches:
-        pass
-
-    for branch_name, required_approvals in (workflow.protection or {}).items():
+    for branch_name, rules in (workflow.protection or {}).items():
         branch = github_api.get_branch(flox.project.id, branch_name)
 
         if not branch:
-            # print("xxx")
-            pass
+            output.warning(f'Branch "{branch_name}" is not defined.')
         else:
-            if branch.protected:
-                output.info(f'Branch "{branch_name}" has protection rules set.')
+            rules.setdefault("enforce_admins", None)
+            rules.setdefault("restrictions", dict(users=["mprzytulski"], teams=["engineering"]))
 
-            branch.edit_protection(required_approving_review_count=required_approvals)
+            headers, data = branch._requester.requestJsonAndCheck(
+                "PUT",
+                branch.protection_url,
+                headers={"Accept": Consts.mediaTypeRequireMultipleApprovingReviews},
+                input=rules,
+            )
 
-        output.success(f'Branch protection rules set for "{branch_name}" branch.')
+            output.success(f'Branch protection rules set for "{branch_name}" branch.')
 
 
 @handle_exceptions
