@@ -50,6 +50,7 @@ def create_repository(flox: FloxContext, github_api: UnifiedApi, output, organiz
 
     return dict(
         git_repository=repo.clone_url,
+        git_ssh_repository=repo.ssh_url,
         git_remote_has_branches=repo.get_branches().totalCount > 0,
         github_repository_name=repo.full_name,
     )
